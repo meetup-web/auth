@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=66.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name = "auth"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aio-pika>=9.5.5",
+    "aiosqlite>=0.21.0",
+    "alembic>=1.15.2",
+    "bazario>=0.4.2",
+    "bcrypt>=4.3.0",
+    "click>=8.1.8",
+    "dishka>=1.5.2",
+    "fastapi>=0.115.12",
+    "faststream>=0.5.37",
+    "mypy>=1.15.0",
+    "sqlalchemy>=2.0.40",
+    "taskiq>=0.11.16",
+    "taskiq-aio-pika>=0.4.1",
+    "uuid7>=0.1.0",
+    "uvicorn>=0.34.0",
+]
+
+[project.scripts]
+auth = "auth.bootstrap.entrypoints.cli:main"
