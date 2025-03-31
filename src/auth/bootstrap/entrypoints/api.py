@@ -2,7 +2,6 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from typing import TYPE_CHECKING, cast
 
-from dishka import AsyncContainer
 from dishka.integrations.fastapi import (
     setup_dishka as add_container_to_fastapi,
 )
@@ -28,6 +27,7 @@ from auth.presentation.api.routers.healthcheck import HEALTHCHECK_ROUTER
 from auth.presentation.api.routers.users import USERS_ROUTER
 
 if TYPE_CHECKING:
+    from dishka import AsyncContainer
     from starlette.types import HTTPExceptionHandler
 
 
@@ -37,7 +37,7 @@ async def lifespan(application: FastAPI) -> AsyncIterator[None]:
     map_user_table()
     map_session_table()
 
-    dishka_container = cast(AsyncContainer, application.state.dishka_container)
+    dishka_container = cast("AsyncContainer", application.state.dishka_container)
     yield
     await dishka_container.close()
 
