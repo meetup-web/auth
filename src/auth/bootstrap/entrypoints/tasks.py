@@ -3,11 +3,7 @@ from typing import cast
 from dishka.integrations.taskiq import (
     setup_dishka as add_container_to_taskiq,
 )
-from faststream.rabbit import (
-    ExchangeType,
-    RabbitBroker,
-    RabbitExchange,
-)
+from faststream.rabbit import ExchangeType, RabbitBroker, RabbitExchange
 from taskiq import TaskiqEvents, TaskiqState
 from taskiq_aio_pika import AioPikaBroker
 
@@ -29,7 +25,7 @@ def add_tasks_to_taskiq(broker: AioPikaBroker) -> None:
 
 
 async def start_broker(state: TaskiqState) -> None:
-    faststream_broker = cast(RabbitBroker, state.faststream_broker)
+    faststream_broker = cast("RabbitBroker", state.faststream_broker)
     await faststream_broker.start()
 
 
@@ -38,7 +34,7 @@ def map_outbox_table_handler(state: TaskiqState) -> None:
 
 
 async def bind_queue_to_exchange(state: TaskiqState) -> None:
-    faststream_broker = cast(RabbitBroker, state.faststream_broker)
+    faststream_broker = cast("RabbitBroker", state.faststream_broker)
     await faststream_broker.declare_exchange(
         RabbitExchange(name=ExchangeName.AUTH, durable=True, type=ExchangeType.DIRECT)
     )
