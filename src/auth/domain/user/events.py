@@ -8,6 +8,7 @@ from auth.domain.user.user_id import UserId
 class UserCreated(DomainEvent):
     user_id: UserId
     username: str
+    password: bytes
 
 
 @dataclass(frozen=True)

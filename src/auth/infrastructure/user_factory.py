@@ -40,6 +40,7 @@ class UserFactoryImpl(UserFactory):
         event = UserCreated(
             user_id=user.entity_id,
             username=user.username,
+            password=user.password,
             event_date=user.created_at,
         )
         user.add_event(event)
