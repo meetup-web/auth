@@ -32,6 +32,19 @@ from auth.application.common.behaviors.event_publishing_behavior import (
     EventPublishingBehavior,
 )
 from auth.application.common.markers.command import Command
+from auth.application.models.events import UserLoggedIn
+from auth.application.operations.events.create_session_on_user_created import (
+    CreateSessionOnUserCreatedHandler,
+)
+from auth.application.operations.events.create_session_on_user_logged_in import (
+    CreateSessionOnUserLoggedInHandler,
+)
+from auth.application.operations.events.delete_session_on_user_deleted import (
+    DeleteSessionsOnUserDeletedHandler,
+)
+from auth.application.operations.events.delete_session_on_user_password_changed import (
+    DeleteSessionsOnUserPasswordChangedHandler,
+)
 from auth.application.operations.read.get_current_session import (
     GetCurrentSession,
     GetCurrentSessionHandler,
@@ -52,22 +65,14 @@ from auth.application.operations.write.change_username import (
     ChangeUsername,
     ChangeUsernameHandler,
 )
-from auth.application.operations.write.create_session import (
-    CreateSessionOnUserCreatedHandler,
-    CreateSessionOnUserLoggedInHandler,
-)
-from auth.application.operations.write.delete_sessions import (
-    DeleteSessionsOnUserDeletedHandler,
-    DeleteSessionsOnUserPasswordChangedHandler,
-)
 from auth.application.operations.write.delete_user import DeleteUser, DeleteUserHandler
-from auth.application.operations.write.login import Login, LoginHandler, UserLoggedIn
+from auth.application.operations.write.login import Login, LoginHandler
 from auth.application.operations.write.logout import Logout, LogoutHandler
 from auth.application.operations.write.registration import (
     Registration,
     RegistrationHandler,
 )
-from auth.application.ports.committer import Committer
+from auth.application.ports.transaction_manager import TransactionManager
 from auth.bootstrap.config import (
     DatabaseConfig,
     RabbitmqConfig,
@@ -120,7 +125,7 @@ class PersistenceProvider(Provider):
 
     @provide(scope=Scope.APP)
     def session_maker(self, engine: AsyncEngine) -> async_sessionmaker[AsyncSession]:
-        return async_sessionmaker(engine, expire_on_commit=False, autoflush=True)
+        return async_sessionmaker(engine, expire_on_commit=False)
 
     @provide(provides=AsyncSession)
     async def session(
@@ -158,7 +163,7 @@ class ApplicationAdaptersProvider(Provider):
         WithParents[UtcTimeProvider],  # type: ignore[misc]
         scope=Scope.APP,
     )
-    committer = alias(AsyncSession, provides=Committer)
+    transaction_manager = alias(AsyncSession, provides=TransactionManager)
     session_registry = provide(
         WithParents[WebSessionRegistry],  # type: ignore[misc]
     )

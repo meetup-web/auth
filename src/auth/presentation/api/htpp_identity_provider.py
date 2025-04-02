@@ -10,7 +10,7 @@ from auth.domain.user.user_id import UserId
 
 
 class HttpIdentityProvider(IdentityProvider):
-    _USER_ID_HEADER: Final[str] = "X-Auth-User-Id"
+    _USER_ID_HEADER: Final[str] = "X-User-Id"
     _SESSION_COOKIE_NAME: Final[str] = "session_id"
 
     def __init__(self, request: Request) -> None:

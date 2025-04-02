@@ -32,7 +32,9 @@ SESSIONS_TABLE = Table(
     "sessions",
     MAPPER_REGISTRY.metadata,
     Column("session_id", UUID, primary_key=True),
-    Column("user_id", UUID, ForeignKey("users.user_id"), nullable=False),
+    Column(
+        "user_id", UUID, ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False
+    ),
     Column("expires_at", DateTime(timezone=True), nullable=False),
 )
 

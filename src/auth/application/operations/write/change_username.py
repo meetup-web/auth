@@ -26,6 +26,12 @@ class ChangeUsernameHandler(RequestHandler[ChangeUsername, None]):
         self._time_provider = time_provider
 
     async def handle(self, request: ChangeUsername) -> None:
+        if await self._user_repository.with_username(request.new_username):
+            raise ApplicationError(
+                message="Username already exists",
+                error_type=ErrorType.ALREADY_EXISTS,
+            )
+
         user_id = self._identity_provider.current_user_id()
         user = await self._user_repository.with_id(user_id)
 

@@ -18,6 +18,7 @@ dependencies = [
     "aio-pika>=9.5.5",
     "aiosqlite>=0.21.0",
     "alembic>=1.15.2",
+    "asyncpg>=0.30.0",
     "bazario>=0.4.2",
     "bcrypt>=4.3.0",
     "click>=8.1.8",

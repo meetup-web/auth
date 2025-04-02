@@ -32,7 +32,7 @@ services:
       postgres:
         condition: service_healthy
     container_name: migrations
-    command: ["sh", "-c", "auth make-migrations && auth upgrade-migration"]
+    command: ["sh", "-c", "auth upgrade-migration"]
 
   taskiq_worker:
     image: auth
